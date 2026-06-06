@@ -1,0 +1,25 @@
+name: Build Pure CLI Tool
+
+on:
+  workflow_dispatch: # 允许你手动点击按钮触发编译
+
+jobs:
+  build-cpp-cli:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Compile Pure CLI
+      run: |
+        cl.exe /EHsc core/vdd-demo.cc /Fe:vdd.exe
+        
+    - name: Upload vdd.exe
+      uses: actions/upload-artifact@v4
+      with:
+        name: pure-vdd-cli
+        path: vdd.exe
